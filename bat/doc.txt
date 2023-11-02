@@ -1,0 +1,35 @@
+1 bat报错会继续往下执行
+退出写exit 0
+
+2 调用其他bat
+call xx.bat,且set的变量为全局可相互调用
+
+3 外部参数以空格分割，用%d获取
+xx.bat xx
+%1
+
+4 获取svn分支名
+实例 URL: svn://10.236.101.14/I_client/trunk/Tools/launcher-release
+原理 以找到含URL: svn:的行，以/分割获取第5个值
+代码
+for /f "delims=/ tokens=4" %%a in ('svn info ^| find "URL: svn:"') do set SVN_BRANCH=%%a
+echo SVN_BRANCH: %SVN_BRANCH% 
+
+5 数组的用法
+5-1 定义
+set TEST_CDNS[0]=http://office.autopatch.zulong.com/projectIgame/branch_ob_sea/win_pcmode
+set TEST_CDNS[1]=http://qacdn.autopatch.zulong.com/projectIgame_sea/source/publish/win_pcmode
+5-2 在使用时加上 setlocal enabledelayedexpansion，访问用!PRE_CDNS[%%n]!
+ setlocal enabledelayedexpansion
+for /l %%n in (0,1,%MAX_CDN_NUM%) do ( 
+	set NOW_CDNS[%%n]=!PRE_CDNS[%%n]!
+)
+for /l %%n in (0,1,%MAX_CDN_NUM%) do ( 
+	if defined NOW_CDNS[%%n] (
+		set GAME_CDN=!GAME_CDN!!NOW_CDNS[%%n]!/gamezip/%PUBLISH_KIND%/%LANGUAGE%;
+		set LAUNCHER_CDN=!LAUNCHER_CDN!!NOW_CDNS[%%n]!/launcher/%PUBLISH_KIND%/%LANGUAGE%/%CHANEL_ID%;
+	)
+)
+
+5-3 当前路径
+set now_path=%~dp0

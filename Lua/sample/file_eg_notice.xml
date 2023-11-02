@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notice>
+	<launcherinfo>
+		<!--启动器版本更新提示内容-->
+		<updatenotice>
+		&lt;p style='line-height:110%;'&gt;
+		&lt;font size="5" color="#1D1914"&gt;版本号：&lt;/font&gt;&lt;br&gt;
+		&lt;font size="4" color="#727272"&gt;v1.9.5.1&lt;/font&gt;&lt;br&gt;
+		&lt;font size="5" color="#1D1914"&gt;更新内容：&lt;/font&gt;&lt;br&gt;
+		&lt;font size="4" color="#727272"&gt;1.让小仙女们更美丽&lt;/font&gt;&lt;br&gt;
+		&lt;/p&gt;
+		</updatenotice>
+	</launcherinfo>
+</notice>
