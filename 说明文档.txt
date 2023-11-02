@@ -1,7 +1,1 @@
-一，运行
-1.拖拽到run_py.bat运行
-
-二，py文件转化为exe
-1.命令行安装pyinstaller python -m pip install pyinstaller
-2.pyinstaller -F xxx.py
-3.exe文件在dist里
+各种语言代码的学习总结和应用实例
