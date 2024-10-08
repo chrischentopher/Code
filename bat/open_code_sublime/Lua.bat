@@ -1,0 +1,1 @@
+call common_do.bat %~nx0

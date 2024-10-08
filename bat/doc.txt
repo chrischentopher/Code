@@ -31,5 +31,12 @@ for /l %%n in (0,1,%MAX_CDN_NUM%) do (
 	)
 )
 
-5-3 当前路径
+6 当前路径
 set now_path=%~dp0
+
+7 改变当前活动代码页为UTF-8,处理中文路径文件名需要
+chcp 65001
+
+8
+文件浏览器打开文件夹：start %svn_path%
+cmd打开文件夹 start "%svn_path%" 
