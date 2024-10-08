@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打字练习</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .buttons button {
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .text-to-type {
+            color: gray;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .text-to-type span.correct {
+            color: green;
+        }
+        .text-to-type span.wrong {
+            color: red;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="buttons">
+            <button id="importText">导入文本</button>
+            <button id="addText">添加文本</button>
+            <button id="startPractice">开始练习</button>
+            <button id="endPractice">结束练习</button>
+        </div>
+        <div class="text-to-type" id="textToType">这是一个打字练习的例子</div>
+        <input type="text" id="inputText" placeholder="开始打字..." />
+    </div>
+
+    <script>
+        const textToType = document.getElementById('textToType');
+        const inputText = document.getElementById('inputText');
+        const importTextBtn = document.getElementById('importText');
+        const addTextBtn = document.getElementById('addText');
+        const startPracticeBtn = document.getElementById('startPractice');
+        const endPracticeBtn = document.getElementById('endPractice');
+        let originalText = textToType.innerText;
+        let startTime = null;
+        let alertCount = 0;
+        let correctCount = 0;
+
+        inputText.addEventListener('input', () => {
+            const typedText = inputText.value;
+            let updatedText = '';
+            correctCount = 0;
+
+            if (startTime) {
+                for (let i = 0; i < originalText.length; i++) {
+                    if (i < typedText.length) {
+                        if (typedText[i] === originalText[i]) {
+                            updatedText += `<span class="correct">${originalText[i]}</span>`;
+                            correctCount++;
+                        } else {
+                            updatedText += `<span class="wrong">${originalText[i]}</span>`;
+                        }
+                    } else {
+                        updatedText += originalText[i];
+                    }
+                }
+                textToType.innerHTML = updatedText;
+            }
+
+            if (typedText === originalText && startTime) {
+                const endTime = new Date();
+                const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+                const accuracy = ((correctCount / originalText.length) * 100).toFixed(2);
+                alert(`总用时间: ${timeTaken} 秒\n正确率: ${accuracy}%`);
+                alertCount++;
+                if (alertCount < 3) {
+                    alert(`这是第 ${alertCount} 次弹窗`);
+                }
+                inputText.value = '';
+                startTime = null;
+            }
+        });
+
+        importTextBtn.addEventListener('click', () => {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.txt';
+            fileInput.onchange = e => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = event => {
+                    originalText = event.target.result.trim();
+                    textToType.innerText = originalText;
+                };
+                reader.readAsText(file);
+            };
+            fileInput.click();
+        });
+
+        addTextBtn.addEventListener('click', () => {
+            const userInput = prompt('请输入要练习的文本:');
+            if (userInput) {
+                originalText = userInput.trim();
+                textToType.innerText = originalText;
+            }
+        });
+
+        startPracticeBtn.addEventListener('click', () => {
+            startTime = new Date();
+            inputText.value = '';
+            textToType.innerHTML = originalText;
+        });
+
+        endPracticeBtn.addEventListener('click', () => {
+            if (startTime) {
+                const endTime = new Date();
+                const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+                const accuracy = ((correctCount / originalText.length) * 100).toFixed(2);
+                alert(`练习结束\n总用时间: ${timeTaken} 秒\n正确率: ${accuracy}%`);
+                startTime = null;
+                inputText.value = '';
+            } else {
+                alert('请先开始练习!');
+            }
+        });
+    </script>
+</body>
+</html>
